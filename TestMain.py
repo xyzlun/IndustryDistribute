@@ -60,7 +60,7 @@ myCentroids,clusterAssing = kMeansTest.pro_kMeans(CompanySet,k)
 for row in zip(CompanySet,clusterAssing):
     #company = session.query(CompanyTest).filter(CompanyTest.InterID==int(row[0][0,4])).first()
     row[0][0,4] = row[1][0,0]
-    session.query(CompanyTest).filter(CompanyTest.InterID==int(row[0][0,0])).update({CompanyTest.clusterID:int(row[1][0,0])})
+    companysQuery.filter(CompanyTest.InterID==int(row[0][0,0])).update({CompanyTest.clusterID:int(row[1][0,0])})
     session.commit()
 #endregion
 
