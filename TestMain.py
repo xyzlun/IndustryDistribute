@@ -13,6 +13,7 @@ from Tool import Data_Creator,Map_Labeler,Company_Statistic
 from Algorithm import kMeans
 from Models import *
 from TestModel import *
+from FigDrawing import *
 
 
 
@@ -49,8 +50,9 @@ IndustryLabelDict = Data_Creator.CategoryDict(categoryInfoQuery)  # 键为ID，�
 
 
 #region 聚类
+k = 18
 kMeansTest = kMeans.kMeansCal(InOutMtrix, StationSet)
-myCentroids,clusterAssing = kMeansTest.pro_kMeans(CompanySet,18)
+myCentroids,clusterAssing = kMeansTest.pro_kMeans(CompanySet,k)
 #myCentroids,clusterAssing = kMeansTest.pro_biKmeans(CompanySet,10)
 #endregion
 
@@ -74,4 +76,6 @@ Company_Statistic.CompanyStatistic(companysQuery,IndustryLabelDict,18,filename)
 Map_Labeler.DrawPointMap(companysQuery, stationsQuery,filename,labelType='cluster')
 #endregion
 
-
+#region 绘制单个聚类的行业分布情况
+SingleFigDrawing(companysQuery,stationsQuery,k)
+#endregion

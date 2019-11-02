@@ -14,8 +14,9 @@ from sqlalchemy import create_engine
 # 导入会话模块
 from sqlalchemy.orm import sessionmaker
 
-
-def DrawPointMap(companys,stations,picName='temp',labelType='industry'):
+#labelType='industry'时，按行业标记，为'cluster'时，按聚类标记
+#model='single'时，只绘制某一聚类的行业分布，为'all'时，绘制全部
+def DrawPointMap(companys,stations,picName='temp',labelType='industry',mode='single'):
     fig = plt.figure()
     ax1 = fig.add_axes([0.1,0.1,0.8,0.8])#[left,bottom,width,height]
     #region 绘制底图
@@ -61,7 +62,7 @@ def DrawPointMap(companys,stations,picName='temp',labelType='industry'):
         15:"#f4511e",
         16:"#6d4c41",
         17:"#616161",
-        18:"#607d8b"
+        18:"#607d8b",
     }
     # 聚类分类颜色字典
     ClusterColorDic={
@@ -91,6 +92,12 @@ def DrawPointMap(companys,stations,picName='temp',labelType='industry'):
     temp_lng_list = []
     temp_name_list = []
     color_list = []
+    if mode=='single':
+        index = 0
+        temp_color_list = []  # 暂时存放颜色字典中的颜色
+        for color in IndustryColorDic.values():
+            temp_color_list.append(color)
+        singleIndustryColorDic = {}  # 当mode为single时初始化单独的颜色标签
     if companys is not None:
         for model in companys:
             #生成单行业图片
@@ -101,7 +108,19 @@ def DrawPointMap(companys,stations,picName='temp',labelType='industry'):
             temp_name_list.append(model.InterID)
             if labelType == 'industry':
                 # 按行业标签标记颜色
-                color_list.append(IndustryColorDic[model.industry_label])
+                if mode=='all':
+                    color_list.append(IndustryColorDic[model.industry_label])
+                # 此处的逻辑为：当mode为single时，数量前10的行业不一定在预设的颜色字典中，因此先将预设的颜色
+                # 取出来形成list，并新建一个空颜色字典，设置一个游标index，初始值=0，在遍历company对象时，如
+                # 过当前对象的行业标签不在新的颜色字典中，则在颜色list中取索引为index的颜色为值，以当前标签为键
+                # 存入新的颜色字典中，同时index加1，color_list添加这个颜色；如果当前对象的标签在新的颜色字典中，
+                # 则直接加入color_list
+                if mode=='single':
+                    if not singleIndustryColorDic.keys().__contains__(model.industry_label):
+                        singleIndustryColorDic[model.industry_label] = temp_color_list[index]
+                        index += 1
+                    color_list.append(singleIndustryColorDic[model.industry_label])
+
             if labelType == 'cluster':
                 # 按聚类ID标记颜色
                 color_list.append(ClusterColorDic[model.clusterID])
@@ -137,7 +156,7 @@ def DrawPointMap(companys,stations,picName='temp',labelType='industry'):
         ID_sta= np.array(temp_staID_list,dtype=str)
 
         m,n = map(lon_sta,lat_sta)
-        map.scatter(m, n,s=5,marker='s',edgecolors='none',color = 'r') #要标记的点的坐标、大小及颜色
+        map.scatter(m, n,s=1,marker='s',edgecolors='none',color = 'r') #要标记的点的坐标、大小及颜色
     #endregion
 
     #region 读取csv文件，废弃
