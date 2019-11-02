@@ -41,7 +41,7 @@ InOutMtrix = Data_Creator.EntityToMatrix(in_out_sheetQuery)
 #print(CompanySet)
 kMeansTest = kMeans.kMeansCal(InOutMtrix, StationSet)
 #temp = kMeansTest.topsisDis(CompanySet[0], CompanySet[1])
-myCentroids,clusterAssing = kMeansTest.pro_kMeans(CompanySet,15)
+myCentroids,clusterAssing = kMeansTest.pro_kMeans(CompanySet,18)
 #myCentroids,clusterAssing = kMeansTest.pro_biKmeans(CompanySet,10)
 
 #TODO 将聚类结果列表clusterAssing和CompanySet组合在一起，回填数据库
@@ -56,6 +56,6 @@ for row in zip(CompanySet,clusterAssing):
 #endregion
 
 companysQuery = session.query(CompanyTest)  # 读取所有公司信息
-Map_Labeler.DrawPointMap(companysQuery, stationsQuery,"Cluster_Result_12_use_station_test",labelType='cluster')
+Map_Labeler.DrawPointMap(companysQuery, stationsQuery,"./result/Cluster_Result_05_use_station_test",labelType='cluster')
 #print(StationSet)
 
