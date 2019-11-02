@@ -55,7 +55,7 @@ if __name__=='__main__':
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    k=3
+    k=18
     companysQuery = session.query(CompanyTest)
     stationsQuery = session.query(StationTest)  # 读取所有地铁站信息
     SingleFigDrawing(companysQuery,stationsQuery,k)
