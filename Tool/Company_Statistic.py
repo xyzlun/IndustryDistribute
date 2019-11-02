@@ -10,14 +10,15 @@ from sqlalchemy.orm import sessionmaker
 from collections import Counter
 
 
-from Tool import Data_Creator,Map_Labeler
-from Algorithm import kMeans
+from Tool import Data_Creator
 from Models import *
 from TestModel import *
 
 def CompanyStatistic(companys,industryLabelDict,k,filename):
     workbook = xlwt.Workbook(encoding='utf-8')  # 新建工作簿
     sheet1 = workbook.add_sheet('sheet1')  # 新建sheet
+    style = xlwt.XFStyle()  # 设置单元格样式
+    style.num_format_str='0.00%'
 
     # 填写行标题
     for i in range(0,k,2):
@@ -30,13 +31,15 @@ def CompanyStatistic(companys,industryLabelDict,k,filename):
         temp_list = []
         for item in cluster_label:
             temp_list.append(industryLabelDict[item[0]])
-        ElemCounter = Counter(temp_list)
-        for j,item in enumerate(ElemCounter):
-            sheet1.write(j+1,i*2,item)
+        ElemCounter = Counter(temp_list).items()
+        ElemList = sorted(ElemCounter, key=lambda x: x[1],reverse=True)
+        for j,item in enumerate(ElemList):
+            sheet1.write(j+1,i*2,item[0])
             # sheet1.write(j+1,i*2+1,ElemCounter[item])  # 个数
-            sheet1.write(j+1,i*2+1,'{:.2f}%'.format(ElemCounter[item]/total*100))  # 百分比
+            sheet1.write(j+1,i*2+1,float(item[1]/total),style=style)  # 百分比
 
-    workbook.save('./result/'+filename+'.xls')   #保存
+    # workbook.save('./result/'+filename+'.xls')   #保存
+    workbook.save('../result/'+filename+'.xls')   #保存
     print('company statistic sheet saved')
 
 
