@@ -9,8 +9,8 @@ from collections import Counter
 
 class kMeansCal():
     def __init__(self,InOutMtrix,StationSet):
-        self.distMax = 2196.936200645564  # 假设距离最大值
-        self.distMin = 0.0  # 假设距离最小值
+        self.distMax = 3196.936200645564  # 假设距离最大值
+        self.distMin = 0.1  # 假设距离最小值
         self.relMin = 0.000113  # 完全消耗系数最小值
         self.relMax = 1.056232  # 完全消耗系数最大值
         self.InOutMatrix = InOutMtrix
