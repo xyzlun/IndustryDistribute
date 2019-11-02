@@ -186,6 +186,7 @@ class kMeansCal():
 
     # 改进的常规K-均值聚类算法
     def pro_kMeans(self,dataSet,k,distMeas=topsisDis,creatCent=stationRandcent):
+        refresh_indicate = 0  # 迭代次数
         m = shape(dataSet)[0]
         clusterAssment = mat(zeros((m,2)))
         centroids = creatCent(self,dataSet,k)
@@ -237,8 +238,11 @@ class kMeansCal():
             for cent in range(k):
                 ptsInClust = dataSet[nonzero(clusterAssment[:,0].A==cent)[0]]  # 取出以cent为质心的所有坐标
                 centroids[cent,:] = mean(ptsInClust,0)  # 对上面一步取出的坐标求平均值，作为新的质心
+                refresh_indicate += 1
             print('更新后的质心为：')
             print(centroids)
+        print('cluster finished')
+        print('{}{}'.format('迭代次数为',refresh_indicate))
         return centroids,clusterAssment
 
     # 改进的二分K-均值聚类算法

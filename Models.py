@@ -86,3 +86,9 @@ class IndustryLabel(Base):
     f_label = Column(String(255))
     ff_label=Column(Integer)
     label_no=Column(Integer)
+
+# 行业大类实体类
+class CategoryInfo(Base):
+    __tablename__ = 'category_info'
+    catID = Column(Integer, primary_key=True, autoincrement=True)
+    catName = Column(String(255))

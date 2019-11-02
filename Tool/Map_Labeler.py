@@ -167,9 +167,9 @@ def DrawPointMap(companys,stations,picName='temp',labelType='industry'):
     figName = picName
     #figName="Cluster_Result_04"  # 生成图片文件名
     plt.title(figName)#标题
-    plt.savefig(figName+'.png', dpi=1000,bbox_inches='tight')#文件命名为Chongqing.png存储
+    plt.savefig('./result/'+figName+'.png', dpi=1000,bbox_inches='tight')#文件命名为Chongqing.png存储
     #plt.show()
-    print('progress finished')
+    print('picture drawing finished')
     #endregion
 
 
