@@ -26,11 +26,11 @@ def CompanyStatistic(companys,industryLabelDict,k,filename):
     str_style.alignment.horz = 2  # 水平居中
 
     # 填写行标题
-    for i in range(0,k,2):
-        sheet1.write(0,i,'Cluster '+str(i),style=str_style)
-        sheet1.col(i).width = 256 * 15
-        sheet1.write(0,i + 1,'占比',style=str_style)
-        sheet1.col(i+1).width = 256 * 15
+    for i in range(k):
+        sheet1.write(0,i*2,'Cluster '+str(i),style=str_style)
+        sheet1.col(i*2).width = 256 * 15
+        sheet1.write(0,i*2 + 1,'占比',style=str_style)
+        sheet1.col(i*2+1).width = 256 * 15
 
     for i in range(k):
         cluster_label = companys.with_entities(CompanyTest.industry_label).filter(CompanyTest.clusterID == i)
@@ -45,9 +45,9 @@ def CompanyStatistic(companys,industryLabelDict,k,filename):
             # sheet1.write(j+1,i*2+1,ElemCounter[item])  # 个数
             sheet1.write(j+1,i*2+1,float(item[1]/total),style=num_style)  # 百分比
 
+    if filename=='test': workbook.save('../result/'+filename+'.xls')   #保存test
+    else : workbook.save('./result/'+filename+'.xls')   #保存
 
-    # workbook.save('./result/'+filename+'.xls')   #保存
-    workbook.save('../result/'+filename+'.xls')   #保存
     print('company statistic sheet saved')
 
 

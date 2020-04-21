@@ -73,8 +73,6 @@ class kMeansCal():
         rel_input_list = []  # 当前点与前三行业的投入相关系数列表
         rel_output_list = []  # 当前点与前三行业的产出相关系数列表
 
-        #SlcDist = self.distSLC(vecA[0,1:3],vecB[0,1:3])  # 计算球面距离
-
         a = sin(vecA[0,2]*pi/180) * sin(vecB[0,2]*pi/180)
         b = cos(vecA[0,2]*pi/180) * cos(vecB[0,2]*pi/180) * \
         cos(pi * (vecB[0,1]-vecA[0,1]) /180)
@@ -103,9 +101,8 @@ class kMeansCal():
             mean_rel_input = mean(rel_input_list)  # 投入相关系数平均值
             mean_rel_output = mean(rel_output_list)  # 产出相关系数平均值
             total_rel_index = 1 / (mean_rel_input + mean_rel_output)  # 加入结果中的产业相关性
-        result = dist + total_rel_index
-        #result = dist
-        return  result # 因为rel_input和rel_output越大越好，所以应取反
+        return dist + total_rel_index
+
 
     # 球面距离计算
     @staticmethod
@@ -243,7 +240,7 @@ class kMeansCal():
             print(centroids)
         print('cluster finished')
         print('{}{}'.format('迭代次数为',refresh_indicate))
-        return centroids,clusterAssment
+        return centroids,clusterAssment,refresh_indicate
 
     # 改进的二分K-均值聚类算法
     def pro_biKmeans(self,dataSet,k):
@@ -300,7 +297,7 @@ if __name__=='__main__':
 
     #print(kMeansCal.distSLC(matrix([123.77461422409242,41.301604181773878]),matrix([105.43235863588306,28.388416756327588])))
     #print(distEclud(matrix([datMat[0,0],datMat[0,1],datMat[0,2]]),matrix([datMat[1,0],datMat[1,1],datMat[1,2]])))
-    #myCentroids,clusterAssing = kmeans.kMeans(datMat,3)
+    #myCentroids,clusterAssing,refresh_indicate = kmeans.kMeans(datMat,3)
     #print(clusterAssing)
     #myCentroids,clusterAssing = biKmeans(datMat,4)
 

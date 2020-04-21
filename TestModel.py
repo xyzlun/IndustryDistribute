@@ -29,10 +29,10 @@ class StationTest(Base):
     __tablename__ = 'station_info_test'
     StationID = Column(Integer, primary_key=True, autoincrement=True)
     StaName = Column(String(255))
-    Line=Column(Integer)
-    StaType=Column(Integer)
-    lng=Column(String(255))
-    lat=Column(String(255))
+    Line = Column(Integer)
+    StaType = Column(Integer)
+    lng = Column(String(255))
+    lat = Column(String(255))
 
 # 投入产出表实体类
 class InOutSheetTest(Base):

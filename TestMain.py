@@ -50,9 +50,9 @@ IndustryLabelDict = Data_Creator.CategoryDict(categoryInfoQuery)  # 键为ID，�
 
 
 #region 聚类
-k = 18
+k = 18  # 质心数量
 kMeansTest = kMeans.kMeansCal(InOutMtrix, StationSet)
-myCentroids,clusterAssing = kMeansTest.pro_kMeans(CompanySet,k)
+myCentroids,clusterAssing,refresh_indicate = kMeansTest.pro_kMeans(CompanySet,k)
 #myCentroids,clusterAssing = kMeansTest.pro_biKmeans(CompanySet,10)
 #endregion
 
@@ -65,7 +65,7 @@ for row in zip(CompanySet,clusterAssing):
 #endregion
 
 nowTime = datetime.datetime.now().strftime('%Y-%m-%d')
-filename = "Cluster_Result_1_use_station_test_" + nowTime
+filename = "Cluster_Result_6_use_station_test_" + nowTime
 
 
 #region 统计聚类结果
@@ -77,5 +77,7 @@ Map_Labeler.DrawPointMap(companysQuery, stationsQuery,filename,labelType='cluste
 #endregion
 
 #region 绘制单个聚类的行业分布情况
-SingleFigDrawing(companysQuery,stationsQuery,k)
+SingleFigDrawing(companysQuery,stationsQuery,k)  # 绘制车站
+SingleFigDrawing(companysQuery,None,k)  # 不绘制车站
 #endregion
+print('结束，聚类迭代次数为：'+ str(refresh_indicate))

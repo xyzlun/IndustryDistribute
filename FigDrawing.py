@@ -13,7 +13,7 @@ from Algorithm import kMeans
 from Models import *
 from TestModel import *
 
-def SingleFigDrawing(companysQuery, stationsQuery,k):
+def SingleFigDrawing(companysQuery, stationsQuery, k):
 
     for i in range(k):
         #统计出属于行业数量最高的10个行业的企业
@@ -26,14 +26,19 @@ def SingleFigDrawing(companysQuery, stationsQuery,k):
 
         #数量前十的行业
         label_list = []
-        ElemCounter = Counter(temp_list).most_common(10)
+        ElemCounter = Counter(temp_list).most_common(18)
         for var in ElemCounter:
             label_list.append(var[0])
 
         #筛选出属于数量前十的企业query
         top10_companysQuery = input_companysQuery.filter(CompanyTest.industry_label.in_(label_list))
         nowTime = datetime.datetime.now().strftime('%Y-%m-%d')
-        fileName = "Cluster_"+str(i)+"_Result_industry_label_"+nowTime
+        if stationsQuery is None:
+            fileName = "Cluster_" + str(i) + "_Result_industry_label_without_station"
+        else:
+            fileName = "Cluster_"+str(i)+"_Result_industry_label"
+
+
         #region 对某一聚类的行业分布
         Map_Labeler.DrawPointMap(top10_companysQuery, stationsQuery,fileName,labelType='industry')
         print('Cluster '+str(i)+' is finished')
@@ -55,10 +60,12 @@ if __name__=='__main__':
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    k=18
+    k = 18
     companysQuery = session.query(CompanyTest)
     stationsQuery = session.query(StationTest)  # 读取所有地铁站信息
-    SingleFigDrawing(companysQuery,stationsQuery,k)
+    SingleFigDrawing(companysQuery, stationsQuery, k)
+    SingleFigDrawing(companysQuery, None, k)
+
 
     # 对某一聚类的行业分布
     # companysQuery = session.query(CompanyTest).filter(CompanyTest.clusterID == 14).all()
